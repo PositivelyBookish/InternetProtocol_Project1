@@ -6,10 +6,11 @@ Created on Tue Sep 22 14:21:29 2026
 """
 import asyncio
 import csv
+import os
 import time
 import statistics
 
-from aioquic.asyncio.connect import connect
+from aioquic.asyncio import connect
 from aioquic.asyncio.protocol import QuicConnectionProtocol
 from aioquic.h3.connection import H3Connection
 from aioquic.h3.events import HeadersReceived, DataReceived
@@ -18,8 +19,8 @@ from aioquic.quic.events import QuicEvent
 
 
 # Computer 2 is the server
-COMPUTER_1_IP = "10.154.1.68"
-COMPUTER_2_IP = "10.152.23.208"
+COMPUTER_1_IP = "10.154.38.77"
+COMPUTER_2_IP = "10.152.31.53"
 
 SERVER_IP = COMPUTER_2_IP
 PORT = 4433
@@ -77,7 +78,7 @@ async def transfer_file(
 
 
     if direction == "upload":
-
+        file_name = os.path.join("Data files", file_name)
         with open(file_name, "rb") as file:
 
             file_data = file.read()
