@@ -1,0 +1,2 @@
+# Keep local tests out of this repository.
+/tests/
