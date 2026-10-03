@@ -271,9 +271,14 @@ class HTTP3ServerProtocol(QuicConnectionProtocol):
                             (b":status", b"200"),
                             (
                                 b"content-length",
-                                b"0"
+                                b"2"
                             )
-                        ],
+                        ]
+                    )
+
+                    self.http.send_data(
+                        stream_id,
+                        b"OK",
                         end_stream=True
                     )
 
