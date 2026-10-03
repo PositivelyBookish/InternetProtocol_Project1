@@ -25,7 +25,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 PORT = 4433
 
 # Folder where the files are stored
-FILE_FOLDER = "Data files"
+FILE_FOLDER = os.path.join("..", "Data files")
 
 # Certificate and private key filenames
 CERT_FILE = "server-cert.pem"

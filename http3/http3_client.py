@@ -78,7 +78,7 @@ async def transfer_file(
 
 
     if direction == "upload":
-        file_name = os.path.join("Data files", file_name)
+        file_name = os.path.join("..", "Data files", file_name)
         with open(file_name, "rb") as file:
 
             file_data = file.read()
