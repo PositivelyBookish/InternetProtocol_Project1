@@ -22,7 +22,7 @@ def load_files(directory):
     return files
 
 
-def serve_connection(sock, files):
+def serve_connection(sock, files, data_dir=DATA_DIR):
     conn = new_connection(False)
     flush(sock, conn)
     requests, outgoing = {}, {}
@@ -83,8 +83,15 @@ def serve_connection(sock, files):
                     digest = hashlib.sha256(body).hexdigest()
                     if len(body) != FILES[name] or digest != headers.get('x-file-sha256'):
                         respond(event.stream_id, 422)
+                    elif name in files and files[name][1] != digest:
+                        respond(event.stream_id, 409)  # Preserve a different existing file.
                     else:
-                        # Verify in memory; never overwrite source files.
+                        if name not in files:
+                            path = data_dir / name
+                            with path.open('xb') as output:
+                                output.write(body)
+                            files[name] = (bytes(body), digest)
+                            print(f'Saved upload: {path}', flush=True)
                         respond(event.stream_id, 200, extra=[
                             ('x-file-sha256', digest), ('x-file-bytes', str(len(body)))])
         for stream, (body, offset) in list(outgoing.items()):
@@ -121,7 +128,7 @@ def main():
                 sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
                 print(f'Client connected: {address}', flush=True)
                 try:
-                    serve_connection(sock, files)
+                    serve_connection(sock, files, args.data_dir)
                 except (OSError, H2Error, ValueError) as exc:
                     print(f'Session failed: {exc}', file=sys.stderr, flush=True)
             print('Session closed', flush=True)

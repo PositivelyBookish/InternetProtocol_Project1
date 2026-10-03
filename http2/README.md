@@ -63,7 +63,7 @@ Then run the full experiment, keeping computer 1's server running:
 python client.py --host SERVER_IP --mode suite --prefix A --upload-prefix B --output results/http2_one_connection.csv
 ```
 
-The client downloads A using GET, then uploads B using POST, all through **one TCP connection**. The server verifies B and confirms receipt; it does not request B or save uploaded files to disk.
+The client downloads A using GET, then uploads B using POST, all through **one TCP connection**. The server verifies B, saves one copy of each file in its `Data files` folder (or `--data-dir`), and confirms receipt. Repeated uploads are verified without rewriting the saved copy; an existing file with different contents is rejected with HTTP 409.
 
 | Size | A downloads | B uploads |
 | --- | ---: | ---: |
@@ -88,7 +88,7 @@ Paste the **second line** of `http2_one_connection_table.row.tsv` into **B4:I4**
 
 Keep the raw `.csv`, `.summary.csv`, `.session.json`, and calculated outputs for the report. Use new output filenames for repeat runs; existing files are not overwritten. If no input CSV is supplied, the calculator pools all full experiments in `results/`.
 
-Timing excludes connection setup. GET ends when the response completes; POST ends after the server's verification acknowledgement. `overhead_ratio = app_bytes / file_bytes` counts file-direction HTTP/2 headers and data frames; shared control frames and TCP/IP overhead are excluded. Match these measurement choices when comparing with HTTP/3.
+Timing excludes connection setup. GET ends when the response completes; POST ends after the server's verification acknowledgement, including the disk write when a file is first saved. `overhead_ratio = app_bytes / file_bytes` counts file-direction HTTP/2 headers and data frames; shared control frames and TCP/IP overhead are excluded. Match these measurement choices when comparing with HTTP/3.
 
 Press **Ctrl+C** on computer 1 to stop the server when finished.
 
