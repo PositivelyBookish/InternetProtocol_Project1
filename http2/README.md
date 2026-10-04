@@ -101,4 +101,4 @@ Press **Ctrl+C** on computer 1 to stop the server when finished.
 
 For additional options, run `python client.py --help` or `python server.py --help`.
 
-Library: [hyper-h2](https://github.com/python-hyper/h2). AI assistance was used for implementation revisions, validation, and documentation; disclose it in the report.
+Library: [hyper-h2](https://github.com/python-hyper/h2). 
