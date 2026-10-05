@@ -9,6 +9,15 @@ Make sure Python is installed, then install `aioquic` in terminal (make sure fil
 ```bash
 python -m pip install aioquic
 ```
+## Update the Client IP Address
+
+Before running the client, update the **server IP address in `client.py`** to match the current IP address of the computer running `server.py`.
+
+If both computers are connected through shared Wi-Fi, the server's IP address may change when connecting to a different network. Make sure both computers are on the **same Wi-Fi network** and update the IP address in `client.py` accordingly.
+
+```python
+SERVER_IP = "YOUR_SERVER_IP"
+```
 
 ## How to Run
 
